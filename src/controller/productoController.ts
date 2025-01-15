@@ -1,10 +1,24 @@
 import { Response, Request } from "express";
-export const getProduct = ((req : Request, res : Response) => {
+import { PrismaClient } from "@prisma/client";
 
-    console.log("Se obtiene la lista de productos");
-    res
-        .status(200)
+const prisma = new PrismaClient(); 
+
+export const getProductController = async (req : Request, res : Response) => {
+
+    const productQuery = await prisma.producto.findUnique({
+        where: {
+            idProducto: 3, 
+        }, 
+    }); 
+
+    console.log(productQuery); 
+    if(productQuery != null){
+        console.log(productQuery!.nombreProducto);
+        console.log(productQuery.fechaIngreso);
+    }
+
+    res.status(200)
         .json(
             {message: "Lista de productos"});
 
-})
+}; 
