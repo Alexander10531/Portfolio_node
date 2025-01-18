@@ -43,3 +43,11 @@ export const getProductController = async (req : Request, res : Response) => {
             });
 
 }; 
+
+export const createProductController = async (req : Request, res : Response) => {
+    const errors = expressValidator.validationResult(req);
+    console.log(errors);
+    res.status(200).json({
+        "mensaje" : "Producto creado"
+    });        
+}
