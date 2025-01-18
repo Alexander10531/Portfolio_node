@@ -1,18 +1,13 @@
-import { Router } from "express";
-import { createProductController, getProductController } from "../controller/productoController";
-
-const routerProduct : Router = Router(); 
 const expressValidator = require('express-validator');
 
-routerProduct.get(
-    "/", 
-    [expressValidator.query('idProducto')
-        .isNumeric()
-        .notEmpty()],
-    getProductController); 
+export const getProductValidation = [
+    expressValidator.query('idProducto')
+    .isInt({ min : 1 }).withMessage("Field idProducto must be a number")
+    .notEmpty().withMessage("Field idProducto must not be empty")
+]
 
-routerProduct.post("",
-    [expressValidator.body('nombreProducto')
+export const createProductValidation = [
+    expressValidator.body('nombreProducto')
         .isString().withMessage("Field nombreProducto must be a string")
         .notEmpty().withMessage("Field nombreProducto must not be empty"), 
     expressValidator.body('idCategoria')
@@ -24,6 +19,5 @@ routerProduct.post("",
     expressValidator.body("idEstado")
         .isInt({ min : 1}).withMessage("Field idEstado must be greater than 1")
         .notEmpty().withMessage("Field idEstado must not be empty")
-    ], createProductController)
+]
 
-export default routerProduct; 

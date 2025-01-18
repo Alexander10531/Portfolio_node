@@ -9,11 +9,8 @@ export const getProductController = async (req : Request, res : Response) => {
 
     const errors = expressValidator.validationResult(req);
     if(!errors.isEmpty()){
-        res.status(400).json({
-            message : "Se esta teniendo problemas con la peticion", 
-            errors : errors.array()
-        });
-        return; 
+        const error = new Error("The request has some problems");
+        throw error; 
     }
 
     const productQuery = await prisma.producto.findUnique({
