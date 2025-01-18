@@ -1,6 +1,5 @@
 import { Response, Request } from "express";
 import { PrismaClient } from "@prisma/client";
-import { error } from "console";
 
 const expressValidator = require('express-validator');
 const prisma = new PrismaClient(); 
@@ -45,9 +44,36 @@ export const getProductController = async (req : Request, res : Response) => {
 }; 
 
 export const createProductController = async (req : Request, res : Response) => {
+
     const errors = expressValidator.validationResult(req);
-    console.log(errors);
+    if(!errors.isEmpty()){
+        res.status(400).json(
+            {
+                message : "La peticion contiene algunos errores", 
+                errors : errors.array()
+            }
+        );
+        return; 
+    }
+
+    const productoRegistrado = await prisma.producto.create({
+        data : {
+            nombreProducto : req.body.nombreProducto,
+            fechaIngreso: new Date(),
+            modeloProducto: req.body.modeloProducto,
+            estado: {
+                connect: { idEstado: Number(req.body.idEstado) }
+            },
+            categoria: {
+                connect: { idCategoria: Number(req.body.idCategoria) }
+            }
+        }
+    }); 
+
+
     res.status(200).json({
-        "mensaje" : "Producto creado"
+        "mensaje" : "Producto creado", 
+        "producto" : productoRegistrado
     });        
+
 }
