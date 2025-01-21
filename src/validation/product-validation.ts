@@ -1,4 +1,11 @@
+import CustomValidator from "express-validator";
+
 const expressValidator = require('express-validator');
+
+export const validateState = (value : String) => {
+    console.log("Validacion de estado")
+    return false; 
+}
 
 export const getProductValidation = [
     expressValidator.query('idProducto')
@@ -19,5 +26,7 @@ export const createProductValidation = [
     expressValidator.body("idEstado")
         .isInt({ min : 1}).withMessage("Field idEstado must be greater than 1")
         .notEmpty().withMessage("Field idEstado must not be empty")
+        .custom(validateState).withMessage("Value of idState does not exist"), 
+        
 ]
 

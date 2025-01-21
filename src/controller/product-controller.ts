@@ -47,3 +47,22 @@ export const createProductController = async (req : Request, res : Response) => 
     });        
 
 }
+
+export const deleteProductController = async (req : Request, res : Response) => {
+    
+    const errors = expressValidator.validationResult(req);
+    if(!errors.isEmpty()){
+        const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
+        throw customException; 
+    }
+
+    // const productDeleted = await prisma.product.update({
+    //     where : {
+    //         idProduct : Number(req.query.idProduct)
+    //     }
+    // });
+
+    res.status(200).json({
+        "message" : "Producto eliminado", 
+    });
+}
