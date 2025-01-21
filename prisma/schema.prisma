@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,27 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Categoria {
-  idCategoria     Int        @id @default(autoincrement())
-  nombreCategoria String
-  fechaIngreso    DateTime
-  Producto        Producto[]
+model Category {
+
+  idCategory     Int        @id @default(autoincrement())
+  nameCategory String
+  entryDate    DateTime
+  Product        Product[]
+
 }
 
-model Producto {
-  idProducto     Int       @id @default(autoincrement())
-  nombreProducto String
-  fechaIngreso   DateTime
-  modeloProducto String
-  idCategoria    Int
-  idEstado Int 
-  estado Estado @relation(fields: [idEstado], references: [idEstado])
-  categoria      Categoria @relation(fields: [idCategoria], references: [idCategoria])
+model Product {
+
+  idProduct     Int       @id @default(autoincrement())
+  nameProduct String
+  entryDate   DateTime
+  modelProduct String
+  idCategory    Int
+  idState Int 
+  state State @relation(fields: [idState], references: [idState])
+  category      Category @relation(fields: [idCategory], references: [idCategory])
   
 }
 
-model Estado{
-  idEstado Int @id @default(autoincrement())
-  nombreEstado String
-  Producto Producto[]
+model State{
+  
+  idState Int @id @default(autoincrement())
+  nameState String
+  Producto Product[]
+
 }

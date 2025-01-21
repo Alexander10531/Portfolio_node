@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProductController, getProductController } from "../controller/producto-controller";
+import { createProductController, getProductController } from "../controller/product-controller";
 import { createProductValidation, getProductValidation } from "../validations/product-validation";
 import { asyncHandler } from "../exception/validation-exception";
 
