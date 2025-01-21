@@ -11,8 +11,11 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.2.1",
+    "@redis/client": "^1.6.0",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
+    "node-cache": "^5.1.2",
+    "redis": "^4.7.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

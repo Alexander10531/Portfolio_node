@@ -5,10 +5,12 @@ export class CustomException extends Error{
     status! : number; 
     errors! : ValidationErrors[]; 
     
-    constructor(message : string, status : number, errors : ValidationErrors[]){
+    constructor(message : string, status : number, errors? : ValidationErrors[]){
         super(message); 
         this.status = status;
-        this.errors = errors; 
+        if(errors){
+            this.errors = errors; 
+        }
     }
 
 }

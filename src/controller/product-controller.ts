@@ -4,7 +4,6 @@ import { Response, Request, NextFunction } from "express";
 import { createProductService, getProductService } from "../services/product-services";
 
 const expressValidator = require('express-validator');
-const prisma = new PrismaClient(); 
 
 export const getProductController = async (req : Request, res : Response, next : NextFunction) => {
 
@@ -46,23 +45,4 @@ export const createProductController = async (req : Request, res : Response) => 
         "producto" : productoRegistrado
     });        
 
-}
-
-export const deleteProductController = async (req : Request, res : Response) => {
-    
-    const errors = expressValidator.validationResult(req);
-    if(!errors.isEmpty()){
-        const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
-        throw customException; 
-    }
-
-    // const productDeleted = await prisma.product.update({
-    //     where : {
-    //         idProduct : Number(req.query.idProduct)
-    //     }
-    // });
-
-    res.status(200).json({
-        "message" : "Producto eliminado", 
-    });
 }

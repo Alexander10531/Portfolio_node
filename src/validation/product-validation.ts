@@ -1,10 +1,25 @@
-import CustomValidator from "express-validator";
+import { State } from "@prisma/client";
+import { cacheState } from "../utils/cache-utils";
+import CustomException from "../classes/custom-error";
 
 const expressValidator = require('express-validator');
 
-export const validateState = (value : String) => {
-    console.log("Validacion de estado")
-    return false; 
+const NodeCache = require('node-cache');
+
+export const validateState = async (value : number) => {
+
+    let states = cacheState.get("states"); 
+    await states.then((states : State[]) => {
+
+        let idEstados = states.map((state : State) => state.idState); 
+        if(idEstados.includes(value)){
+            return true;
+        }else{
+            throw new CustomException("Value of idState does not exist", 400);
+        }
+        
+    })
+
 }
 
 export const getProductValidation = [
@@ -26,7 +41,6 @@ export const createProductValidation = [
     expressValidator.body("idEstado")
         .isInt({ min : 1}).withMessage("Field idEstado must be greater than 1")
         .notEmpty().withMessage("Field idEstado must not be empty")
-        .custom(validateState).withMessage("Value of idState does not exist"), 
-        
+        .custom(validateState).withMessage("Value of idState does not exist")
 ]
 
