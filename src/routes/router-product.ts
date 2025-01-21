@@ -6,6 +6,6 @@ import { asyncHandler } from "../exception/validation-exception";
 const routerProduct : Router = Router(); 
 
 routerProduct.get("/", getProductValidation, asyncHandler(getProductController)); 
-routerProduct.post("/", createProductValidation, createProductController)
+routerProduct.post("/", createProductValidation, asyncHandler(createProductController))
 
 export default routerProduct; 

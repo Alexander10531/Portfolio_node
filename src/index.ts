@@ -6,7 +6,6 @@ import { errorHandler } from "./exception/validation-exception";
 const app : Application = Express(); 
 const port = 3001; 
 
-//Middleware
 app.use(bodyParser.json());
 app.use("/producto", routerProduct); 
 app.use(errorHandler); 

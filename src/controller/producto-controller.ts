@@ -1,10 +1,9 @@
-import { Response, Request, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import CustomException  from "../classes/custom-error";
+import { Response, Request, NextFunction } from "express";
 
 const expressValidator = require('express-validator');
 const prisma = new PrismaClient(); 
-
 
 export const getProductController = async (req : Request, res : Response, next : NextFunction) => {
 
@@ -25,15 +24,13 @@ export const getProductController = async (req : Request, res : Response, next :
     }); 
 
     if(productQuery === null){
-        res
-            .status(404).json({
+        res.status(404).json({
             message: "Producto no encontrado",            
         })
         return; 
     }
 
-    res.status(200)
-        .json(
+    res.status(200).json(
             {
                 "message": "Lista de productos", 
                 "data" : productQuery
@@ -45,13 +42,8 @@ export const createProductController = async (req : Request, res : Response) => 
 
     const errors = expressValidator.validationResult(req);
     if(!errors.isEmpty()){
-        res.status(400).json(
-            {
-                message : "La peticion contiene algunos errores", 
-                errors : errors.array()
-            }
-        );
-        return; 
+        const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
+        throw customException; 
     }
 
     const productoRegistrado = await prisma.producto.create({
@@ -67,7 +59,6 @@ export const createProductController = async (req : Request, res : Response) => 
             }
         }
     }); 
-
 
     res.status(200).json({
         "mensaje" : "Producto creado", 
