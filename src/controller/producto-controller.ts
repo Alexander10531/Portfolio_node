@@ -1,16 +1,17 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
+import CustomException  from "../classes/custom-error";
 
 const expressValidator = require('express-validator');
 const prisma = new PrismaClient(); 
 
 
-export const getProductController = async (req : Request, res : Response) => {
+export const getProductController = async (req : Request, res : Response, next : NextFunction) => {
 
     const errors = expressValidator.validationResult(req);
     if(!errors.isEmpty()){
-        const error = new Error("The request has some problems");
-        throw error; 
+        const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
+        throw customException; 
     }
 
     const productQuery = await prisma.producto.findUnique({

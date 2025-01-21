@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import CustomException from "../classes/custom-error";
+import { ResponseErrorValidation } from "../interfaces/interface-errors";
 
 export interface CustomError extends Error {
 
@@ -7,15 +9,23 @@ export interface CustomError extends Error {
 
 }
 
-export const errorHandler = (err : CustomError, req : Request, res : Response, next : NextFunction) => {
+export const errorHandler = (errors : CustomException, req : Request, res : Response, next : NextFunction) => {
     
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
+    const statusCode = errors.status || 500;
+    const message = errors.message || 'Internal Server Error';
+    let responseError : ResponseErrorValidation[] = []; 
+    
+    for (let error of errors.errors) {
+        responseError.push({
+            message: error.msg, 
+            field : error.path, 
+        }); 
+    }
 
     res.status(statusCode).json({
         success : false, 
-        message, 
-
+        message,
+        responseError 
     })
 
 }; 
