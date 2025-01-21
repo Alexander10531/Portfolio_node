@@ -33,6 +33,6 @@ model State{
   
   idState Int @id @default(autoincrement())
   nameState String
-  Producto Product[]
+  Product Product[]
 
 }

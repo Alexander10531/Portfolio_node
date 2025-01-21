@@ -13,13 +13,13 @@ export const getProductController = async (req : Request, res : Response, next :
         throw customException; 
     }
 
-    const productQuery = await prisma.producto.findUnique({
+    const productQuery = await prisma.product.findUnique({
         include :{
-            categoria: true,
-            estado : true
+            category: true,
+            state : true
         },
         where : {
-            idProducto : Number(req.query.idProducto)
+            idProduct : Number(req.query.idProducto)
         }
     }); 
 
@@ -46,20 +46,20 @@ export const createProductController = async (req : Request, res : Response) => 
         throw customException; 
     }
 
-    const productoRegistrado = await prisma.producto.create({
+    const productoRegistrado = await prisma.product.create({
         data : {
-            nombreProducto : req.body.nombreProducto,
-            fechaIngreso: new Date(),
-            modeloProducto: req.body.modeloProducto,
-            estado: {
-                connect: { idEstado: Number(req.body.idEstado) }
+            nameProduct : req.body.nombreProducto,
+            entryDate: new Date(),
+            modelProduct: req.body.modeloProducto,
+            state: {
+                connect: { idState: Number(req.body.idEstado) }
             },
-            categoria: {
-                connect: { idCategoria: Number(req.body.idCategoria) }
+            category: {
+                connect: { idCategory: Number(req.body.idCategoria) }
             }
         }
     }); 
-
+    
     res.status(200).json({
         "mensaje" : "Producto creado", 
         "producto" : productoRegistrado

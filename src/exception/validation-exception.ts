@@ -11,10 +11,14 @@ export interface CustomError extends Error {
 
 export const errorHandler = (errors : CustomException, req : Request, res : Response, next : NextFunction) => {
     
+    console.log("------------")
+    console.log(errors)
     const statusCode = errors.status || 500;
     const message = errors.message || 'Internal Server Error';
     let responseError : ResponseErrorValidation[] = []; 
     
+    console.log(errors.errors);
+
     for (let error of errors.errors) {
         responseError.push({
             message: error.msg, 
