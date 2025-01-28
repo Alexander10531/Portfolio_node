@@ -17,7 +17,7 @@ export const validateState = async (value : number) => {
         }else{
             throw new CustomException("Value of idState does not exist", 400);
         }
-        
+
     })
 
 }
@@ -43,4 +43,3 @@ export const createProductValidation = [
         .notEmpty().withMessage("Field idEstado must not be empty")
         .custom(validateState).withMessage("Value of idState does not exist")
 ]
-

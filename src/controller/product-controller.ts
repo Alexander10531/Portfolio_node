@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import CustomException  from "../classes/custom-error";
 import { Response, Request, NextFunction } from "express";
 import { createProductService, getProductService } from "../services/product-services";
+import QRCode from 'qrcode';
 
 const expressValidator = require('express-validator');
 
@@ -14,7 +14,7 @@ export const getProductController = async (req : Request, res : Response, next :
     }
 
     let productQuery = await getProductService(req, res, next);
-
+    
     if(productQuery === null){
         res.status(404).json({
             message: "Producto no encontrado",            
@@ -22,10 +22,12 @@ export const getProductController = async (req : Request, res : Response, next :
         return; 
     }
 
+    const qrCodeImage = await QRCode.toDataURL(`http:/localhost:8080/producto:idProducto=${ productQuery.idProduct }`);  
     res.status(200).json(
             {
                 "message": "Lista de productos", 
-                "data" : productQuery
+                "data" : productQuery, 
+                "productQr" : qrCodeImage, 
             });
 
 }; 

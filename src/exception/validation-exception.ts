@@ -10,6 +10,10 @@ export interface CustomError extends Error {
 }
 
 export const errorHandler = (errors : CustomException, req : Request, res : Response, next : NextFunction) => {
+   
+    if(!errors.status){
+        return; 
+    }
     
     const statusCode = errors.status || 500;
     const message = errors.message || 'Internal Server Error';

@@ -8,6 +8,7 @@ const app : Application = Express();
 const port = 3001; 
 
 initializateCache();
+
 app.use(bodyParser.json());
 app.use("/producto", routerProduct); 
 app.use(errorHandler); 
