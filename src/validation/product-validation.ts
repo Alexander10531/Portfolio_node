@@ -23,9 +23,11 @@ export const validateState = async (value : number) => {
 }
 
 export const getProductValidation = [
+
     expressValidator.query('idProducto')
     .isInt({ min : 1 }).withMessage("Field idProducto must be a number")
     .notEmpty().withMessage("Field idProducto must not be empty")
+
 ]
 
 export const createProductValidation = [
