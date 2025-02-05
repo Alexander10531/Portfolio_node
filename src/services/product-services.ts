@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 export const getProductService = async (req : Request, res : Response, next : NextFunction) => {
 
+    console.log("Trayendo informacion"); 
     const productQuery = await prisma.product.findUnique({
         include :{
             category: true,
@@ -15,6 +16,7 @@ export const getProductService = async (req : Request, res : Response, next : Ne
         }
     }); 
 
+    console.log("Se trajo la informacion"); 
     return productQuery; 
 
 }
