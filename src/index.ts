@@ -11,7 +11,7 @@ const port = 3001;
 
 initializateCache();
 
-// testConnection(); 
+testConnection(); 
 app.use(bodyParser.json());
 app.use("/producto", routerProduct); 
 app.use(errorHandler); 
