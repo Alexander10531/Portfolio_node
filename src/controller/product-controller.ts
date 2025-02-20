@@ -48,3 +48,11 @@ export const createProductController = async (req : Request, res : Response) => 
     });        
 
 }
+
+export const productPing = async (req : Request, res : Response) => {
+
+    res.status(200).json({
+        "message" : "Ping de productos"
+    });
+
+}

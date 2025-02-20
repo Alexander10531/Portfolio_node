@@ -9,7 +9,7 @@ import { testConnection } from "./utils/prisma-connection";
 const app : Application = Express(); 
 const port = 3001; 
 
-initializateCache();
+// initializateCache();
 
 testConnection(); 
 app.use(bodyParser.json());
