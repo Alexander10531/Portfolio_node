@@ -11,12 +11,12 @@ const port = 3001;
 
 // initializateCache();
 
-// testConnection(); 
+testConnection(); 
 app.use(bodyParser.json());
 app.use("/producto", routerProduct); 
 app.use(errorHandler); 
 
 
-app.listen(port, ()=>{
-    console.log("Escuchando en el puerto!!!!!  " + port); 
+app.listen(port, '0.0.0.0', ()=>{
+    console.log("Escuchando en el puerto 1" + port); 
 })
