@@ -1,6 +1,6 @@
 import CustomException  from "../classes/custom-error";
 import { Response, Request, NextFunction } from "express";
-import { createProductService, getProductService } from "../services/product-services";
+import { createProductService, getProductService, listProductsService } from "../services/product-services";
 import QRCode from 'qrcode';
 
 const expressValidator = require('express-validator');
@@ -8,6 +8,7 @@ const expressValidator = require('express-validator');
 export const getProductController = async (req : Request, res : Response, next : NextFunction) => {
 
     const errors = expressValidator.validationResult(req);
+
     if(!errors.isEmpty()){
         const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
         throw customException; 
@@ -46,6 +47,24 @@ export const createProductController = async (req : Request, res : Response) => 
         "mensaje" : "Producto creado", 
         "producto" : productoRegistrado
     });        
+
+}
+
+export const listProductController = async (req : Request, res : Response) => {
+    
+    const errors = expressValidator.validationResult(req);
+    if(!errors.isEmpty()){
+        const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
+        throw customException; 
+    }
+
+    let [count, dataProducts] = await listProductsService(req, res); 
+    res.status(200)
+        .json({
+            "Mensaje" : "Se extrajo la informacion de manera correcta.", 
+            "data" : dataProducts,
+            "count":  count
+        }); 
 
 }
 

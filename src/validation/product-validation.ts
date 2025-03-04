@@ -12,7 +12,7 @@ export const validateState = async (value : number) => {
     await states.then((states : State[]) => {
 
         let idEstados = states.map((state : State) => state.idState); 
-        if(idEstados.includes(value)){
+        if(idEstados.includes(Number(value))){
             return true;
         }else{
             throw new CustomException("Value of idState does not exist", 400);
@@ -41,7 +41,18 @@ export const createProductValidation = [
         .isString().withMessage("Field modeloProducto must be a string")
         .notEmpty().withMessage("Field modeloProducto must not be empty"),
     expressValidator.body("idEstado")
-        .isInt({ min : 1}).withMessage("Field idEstado must be greater than 1")
+        .isInt({ min : 1 }).withMessage("Field idEstado must be greater than 1")
         .notEmpty().withMessage("Field idEstado must not be empty")
         .custom(validateState).withMessage("Value of idState does not exist")
+]
+
+export const getListProductsValidation = [
+
+    expressValidator.query('page')
+    .isInt({min : 1}).withMessage("Param idPage must be greater than 0")
+    .notEmpty().withMessage("Field page must not be empty"), 
+    expressValidator.query('pageSize')
+    .isInt({min : 1}).withMessage("Param pageSize must be greater than 0")
+    .notEmpty().withMessage("Field page must not be empty"), 
+
 ]

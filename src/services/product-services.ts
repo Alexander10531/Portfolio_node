@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export const getProductService = async (req : Request, res : Response, next : NextFunction) => {
 
-    console.log("Trayendo informacion"); 
     const productQuery = await prisma.product.findUnique({
         include :{
             category: true,
@@ -16,7 +15,6 @@ export const getProductService = async (req : Request, res : Response, next : Ne
         }
     }); 
 
-    console.log("Se trajo la informacion"); 
     return productQuery; 
 
 }
@@ -38,5 +36,29 @@ export const createProductService = async (req : Request, res : Response) => {
     }); 
 
     return productoRegistrado; 
+
+}
+
+export const listProductsService = async (req : Request, res : Response) => {
+
+    const { page, pageSize } = req.query; 
+    let pagePagination : number = Number(page) == 0 ? 0 : Number(page) - 1;  
+    let pageSizePagination : number = Number(pageSize);  
+    
+    const skip : number = (pagePagination) * pageSizePagination; 
+    const productosRegistrados = await prisma.product; 
+
+    const [dataProducts, count] = await prisma.$transaction([
+        prisma.product.findMany({
+            skip, 
+            take: pageSizePagination, 
+            orderBy: {
+                idProduct : 'asc', 
+            }
+        }), 
+        prisma.product.count(), 
+    ])
+
+    return [count, dataProducts]; 
 
 }
