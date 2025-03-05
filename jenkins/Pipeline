@@ -1,0 +1,53 @@
+pipeline {
+
+    agent none
+    stages {
+        
+        stage('Clone repository'){
+
+            agent any
+            steps{
+                script{
+                    git url: 'https://github.com/Alexander10531/Portfolio_node', branch: 'main', credentialsId: '58c2d96e-44af-4e2d-b5ce-3e53b25502a2'
+                }
+            }
+
+        }
+
+        stage('Build'){
+
+            agent any
+            steps{
+                sh 'docker build -f sql/Dockerfile -t imagen-prueba ./sql'
+                sh 'docker build -f container/Dockerfile -t backend-inventario . '
+            }
+
+        }
+
+        stage('Deploy'){
+            
+            agent any
+            steps{
+                sh '''
+                    CONTAINERS=$(docker ps -q --filter ancestor=imagen-prueba)
+                    if [ -n "$CONTAINERS" ]; then
+	                    docker stop $(docker ps -q --filter ancestor=imagen-prueba)
+	                fi
+                '''
+                sh '''
+                    CONTAINERS_BACKEND=$(docker ps -q --filter ancestor=backend-inventario)
+                    if [ -n "$CONTAINERS_BACKEND" ]; then
+	                    docker stop $(docker ps -q --filter ancestor=backend-inventario)
+	                fi
+                '''
+                sh 'docker container prune -f'
+                sh 'docker run -d -p 5432:5432 --network application-nodejs --name postgresql-database imagen-prueba'
+                sh 'sleep 8'
+                sh 'docker run -d -p 3001:3001 --network application-nodejs --name backend-inventario backend-inventario'
+            }
+
+        }
+
+    }
+
+}
