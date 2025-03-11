@@ -1,5 +1,4 @@
-import { PrismaClient, State } from "@prisma/client";
-import logger from "../config/logger";
+import { PrismaClient } from "@prisma/client";
 
 const NodeCache = require('node-cache');
 const prisma = new PrismaClient();

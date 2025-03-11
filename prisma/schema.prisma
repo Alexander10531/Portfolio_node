@@ -36,3 +36,11 @@ model State{
   Product Product[]
 
 }
+
+model Logs{
+
+  idLog Int @id @default(autoincrement())
+  response String
+  request String
+
+}

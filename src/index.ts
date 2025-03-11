@@ -1,12 +1,11 @@
 import Express, { Application }  from "express";
 import bodyParser from "body-parser";
-
 import routerProduct from "./routes/router-product";
 import { errorHandler } from "./exception/validation-exception";
 import { initializateCache } from "./utils/cache-utils";
 import { testConnection } from "./utils/prisma-connection";
-import logger from "./config/logger"; 
 import { saveLogs } from "./utils/logs-utils";
+import logger from "./config/logger"; 
 
 const app : Application = Express(); 
 const port = 3001; 
@@ -21,5 +20,5 @@ app.use(saveLogs);
 
 
 app.listen(port, '0.0.0.0', ()=>{
-    logger.info("Esccuando en el puerto " +  port); 
+    logger.info("Escuchando en el puerto " +  port); 
 })
