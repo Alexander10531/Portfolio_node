@@ -29,7 +29,7 @@ model Product {
   
 }
 
-model State{
+model State {
   
   idState Int @id @default(autoincrement())
   nameState String
@@ -37,7 +37,7 @@ model State{
 
 }
 
-model Logs{
+model Logs {
 
   idLog Int @id @default(autoincrement())
   response String
