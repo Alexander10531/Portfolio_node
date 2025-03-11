@@ -6,6 +6,7 @@ import { errorHandler } from "./exception/validation-exception";
 import { initializateCache } from "./utils/cache-utils";
 import { testConnection } from "./utils/prisma-connection";
 import logger from "./config/logger"; 
+import { saveLogs } from "./utils/logs-utils";
 
 const app : Application = Express(); 
 const port = 3001; 
@@ -16,6 +17,7 @@ initializateCache();
 app.use(bodyParser.json());
 app.use("/product", routerProduct); 
 app.use(errorHandler); 
+app.use(saveLogs); 
 
 
 app.listen(port, '0.0.0.0', ()=>{

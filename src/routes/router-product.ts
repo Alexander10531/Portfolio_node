@@ -8,6 +8,6 @@ const routerProduct : Router = Router();
 routerProduct.get("/", getProductValidation, asyncHandler(getProductController)); 
 routerProduct.get("/getProductList", getListProductsValidation ,asyncHandler(listProductController)); 
 routerProduct.get("/ping", asyncHandler(productPing));
-routerProduct.post("/", createProductValidation, asyncHandler(createProductController)); 
+routerProduct.post("/", createProductValidation, asyncHandler(createProductController));
 
 export default routerProduct; 

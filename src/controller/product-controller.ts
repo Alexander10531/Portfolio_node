@@ -31,10 +31,11 @@ export const getProductController = async (req : Request, res : Response, next :
                 "data" : productQuery, 
                 "productQr" : qrCodeImage, 
             });
+    next(); 
 
 }; 
 
-export const createProductController = async (req : Request, res : Response) => {
+export const createProductController = async (req : Request, res : Response, next : NextFunction) => {
 
     logger.info("We're extracting products informations")
     const errors = expressValidator.validationResult(req);
@@ -49,10 +50,11 @@ export const createProductController = async (req : Request, res : Response) => 
         "mensaje" : "Producto creado", 
         "producto" : productoRegistrado
     });        
+    next(); 
 
 }
 
-export const listProductController = async (req : Request, res : Response) => {
+export const listProductController = async (req : Request, res : Response, next : NextFunction) => {
     
     const errors = expressValidator.validationResult(req);
     if(!errors.isEmpty()){
@@ -67,6 +69,7 @@ export const listProductController = async (req : Request, res : Response) => {
             "data" : dataProducts,
             "count":  count
         }); 
+    next(); 
 
 }
 

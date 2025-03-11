@@ -8,7 +8,6 @@ export const cacheState = new NodeCache({ stdTTL: 3600 });
 export const initializateCache = async () => {
 
     let states = await prisma.state.findMany(); 
-    console.log(states); 
     cacheState.set("states", states);
     
 }

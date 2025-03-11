@@ -31,6 +31,7 @@ export const errorHandler = (errors : CustomException, req : Request, res : Resp
         message,
         responseError 
     })
+    next(); 
 
 }; 
 

@@ -4,20 +4,14 @@ import CustomException from "../classes/custom-error";
 
 const expressValidator = require('express-validator');
 
-export const validateState = async (value : number) => {
+export const validateState = (value : number) => {
 
-    let states = await cacheState.get("states"); 
-    states.then((states : State[]) => {
-
-        console.log(states); 
-        let idEstados = states.map((state : State) => state.idState); 
-        if(idEstados.includes(Number(value))){
-            return true;
-        }else{
-            throw new CustomException("Value of idState does not exist", 400);
-        }
-
-    })
+    let states = cacheState.get("states"); 
+    let valor = states.find((state : State) => state.idState == value ); 
+    if(valor){
+        return true; 
+    }
+    return false; 
 
 }
 
