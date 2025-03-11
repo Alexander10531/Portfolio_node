@@ -1,12 +1,14 @@
 import { PrismaClient, State } from "@prisma/client";
+import logger from "../config/logger";
 
 const NodeCache = require('node-cache');
 const prisma = new PrismaClient();
 export const cacheState = new NodeCache({ stdTTL: 3600 });
 
-export const initializateCache = () => {
+export const initializateCache = async () => {
 
-    let states : Promise<State[]> = prisma.state.findMany(); 
+    let states = await prisma.state.findMany(); 
+    console.log(states); 
     cacheState.set("states", states);
     
 }

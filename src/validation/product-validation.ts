@@ -4,13 +4,12 @@ import CustomException from "../classes/custom-error";
 
 const expressValidator = require('express-validator');
 
-const NodeCache = require('node-cache');
-
 export const validateState = async (value : number) => {
 
-    let states = cacheState.get("states"); 
-    await states.then((states : State[]) => {
+    let states = await cacheState.get("states"); 
+    states.then((states : State[]) => {
 
+        console.log(states); 
         let idEstados = states.map((state : State) => state.idState); 
         if(idEstados.includes(Number(value))){
             return true;
@@ -35,7 +34,7 @@ export const createProductValidation = [
         .isString().withMessage("Field nombreProducto must be a string")
         .notEmpty().withMessage("Field nombreProducto must not be empty"), 
     expressValidator.body('idCategoria')
-        .isInt({ min : 1})
+        .isInt({ min : 1 })
         .notEmpty().withMessage("Field idCategoria must not be empty"), 
     expressValidator.body("modeloProducto")
         .isString().withMessage("Field modeloProducto must be a string")
