@@ -8,6 +8,7 @@ import { saveLogs } from "./utils/logs-utils";
 import logger from "./config/logger"; 
 import swaggerUi from 'swagger-ui-express'; 
 import swaggerSpec from "./config/swagger-config";
+import routerSecurity from "./routes/router-security";
 
 
 const app : Application = Express(); 
@@ -18,6 +19,7 @@ initializateCache();
 
 app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));  
+app.use("/apiKey", routerSecurity)
 app.use("/product", routerProduct); 
 app.use(errorHandler); 
 app.use(saveLogs);

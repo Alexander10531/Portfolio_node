@@ -66,6 +66,7 @@ const routerProduct : Router = Router();
  *                   example: 1
  */
 routerProduct.get("/getProductList", getListProductsValidation ,asyncHandler(listProductController)); 
+
 /**
  * @swagger
  * /product/ping:
