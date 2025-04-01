@@ -10,26 +10,40 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from "./config/swagger-config";
 import routerSecurity from "./routes/router-security";
 import dotenv from "dotenv"; 
-import { sendEmail } from "./config/email-configuration";
+import { sendEmail } from "./config/aws";
 
 
 const app : Application = Express(); 
 const port = Number(process.env.SERVER_PORT) || 3000; 
 
+const params: AWS.SES.Types.SendEmailRequest = {
+    Source: 'AlexTejedda@gmail.com', 
+    Destination: {
+      ToAddresses: ['AlexanderTejedaBarahona10@gmail.com'], 
+    },
+    Message: {
+      Subject: {
+        Data: 'Prueba de AWS SES'
+      },
+      Body: {
+        Text: {
+          Data: 'Este es un mensaje de prueba enviado desde AWS SES.'
+        }
+      }
+    }
+};
+
+sendEmail(params).then((data) => {
+    logger.info("Email enviado con exito: " + data);
+}
+).catch((error) => {
+    logger.error("Error al enviar el email: " + error); 
+});
+
 dotenv.config(); 
 testConnection(); 
 initializateCache();
 
-const envioDeCorreo = () => {
-
-    sendEmail({
-        to : "AlexanderTejedaBarahona10@gmail.com",
-        subject : "Prueba con typescript", 
-        text : "Hola, esta es una prueba para envio de email" 
-    }).then(() => console.log("Se envio el correo"))
-    .catch((error) => console.error("Error al enviar el correo", error))
-
-}
 
 app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));  
@@ -37,7 +51,12 @@ app.use("/apiKey", routerSecurity)
 app.use("/product", routerProduct); 
 app.use(errorHandler); 
 app.use(saveLogs);
-envioDeCorreo(); 
+
+sendEmail(params).then((data) => {
+    logger.info("Email enviado con exito: " + data);
+}).catch((error) => {
+    logger.error("Error al enviar el email: " + error); 
+}); 
 
 app.listen(port, '0.0.0.0', ()=>{
     logger.info("Escuchando en el puerto " +  port); 
