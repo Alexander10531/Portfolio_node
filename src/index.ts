@@ -17,13 +17,13 @@ const app : Application = Express();
 const port = Number(process.env.SERVER_PORT) || 3000; 
 
 const params: AWS.SES.Types.SendEmailRequest = {
-    Source: 'AlexTejedda@gmail.com', 
+    Source: 'Alextejedda@gmail.com', 
     Destination: {
       ToAddresses: ['AlexanderTejedaBarahona10@gmail.com'], 
     },
     Message: {
       Subject: {
-        Data: 'Prueba de AWS SES'
+        Data: 'Prueba de AWS SES, esta si es la definitiva'
       },
       Body: {
         Text: {
@@ -34,7 +34,7 @@ const params: AWS.SES.Types.SendEmailRequest = {
 };
 
 sendEmail(params).then((data) => {
-    logger.info("Email enviado con exito: " + data);
+    logger.info("Email enviado con exito: " + String(data));
 }
 ).catch((error) => {
     logger.error("Error al enviar el email: " + error); 

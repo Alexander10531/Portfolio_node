@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 
 AWS.config.update({
-  region: 'us-east-1' 
+  region: 'us-east-2' 
 });
 
 const ses = new AWS.SES();
