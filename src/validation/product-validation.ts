@@ -1,6 +1,5 @@
 import { State } from "@prisma/client";
 import { cacheState } from "../utils/cache-utils";
-import CustomException from "../classes/custom-error";
 
 const expressValidator = require('express-validator');
 
