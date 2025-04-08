@@ -40,3 +40,14 @@ INSERT INTO public."Category"("nameCategory", "entryDate") VALUES ('Televisores'
 INSERT INTO public."State"("idState", "nameState")VALUES(1, 'Activo');
 INSERT INTO public."State"("idState", "nameState")VALUES(2, 'Inactivo');
 INSERT INTO public."Product"("nameProduct", "entryDate", "idCategory", "modelProduct", "idState")VALUES('Sony', '2025-01-16', 1, 'Bravia', 1);
+
+CREATE TABLE public.keys_history (
+	"idApiKeys" int4 GENERATED ALWAYS AS IDENTITY NOT NULL,
+	"linkedEmail" varchar NOT NULL,
+	"apiKey" varchar NOT NULL,
+	"publicKey" varchar NOT NULL,
+	CONSTRAINT keys_history_pk PRIMARY KEY (idapikeys),
+	CONSTRAINT keys_history_unique UNIQUE (linkedemail),
+	CONSTRAINT keys_history_unique_1 UNIQUE (apikey),
+	CONSTRAINT keys_history_unique_2 UNIQUE (publickey)
+);

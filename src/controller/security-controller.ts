@@ -1,39 +1,39 @@
-import { NextFunction, Request, Response } from "express"
+import { log } from "console";
 import CustomException from "../classes/custom-error";
-import { send } from "process";
-import { sendEmail } from "../config/aws";
+import { NextFunction, Request, Response } from "express"
+import { PrismaClient } from "@prisma/client";
+import logger from "../config/logger";
+import crypto from "crypto";
 
 const expressValidator = require('express-validator');
+const prisma = new PrismaClient();
 
 export const generateApiKey = async (req : Request, res : Response, next : NextFunction) => {
-
+    
+    logger.info("Creating an API Key subject");
     const errors =  expressValidator.validationResult(req); 
     if(!errors.isEmpty()){
         const customException: CustomException = new CustomException("The request has some problems", 400, errors.array());
         throw customException;
     }
 
-    const params: AWS.SES.Types.SendEmailRequest = {
-        Source: process.env.email_destintation!, 
-        Destination: {
-          ToAddresses: [req.body.email], 
-        },
-        Message: {
-          Subject: {
-            Data: 'Esta es una prueba'
-          },
-          Body: {
-            Text: {
-              Data: 'Este es un mensaje de prueba enviado desde AWS SES.'
-            }
-          }
+    const keysHistory = prisma.keys_history.create({
+        data : {
+            linkedEmail : req.body.email,
+            apiKey : crypto.randomBytes(32).toString('hex'), 
+            publicKey : req.body.publicKey 
         }
-    };
+    }); 
 
-    sendEmail(params).then((data) => {}).catch((error) => {}); 
+    keysHistory.then((result) => {
+        console.log(result);
+    }).catch((error) => {
+        console.log(error);
+    }); 
 
     res.status(200)
     .send({
+        "status" : 202,
         "mensaje" : "API Key generado correctamente"
     });
 

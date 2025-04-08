@@ -44,3 +44,12 @@ model Logs {
   request String
 
 }
+
+model keys_history {
+
+  idApiKeys Int @id @default(autoincrement())
+  linkedEmail String
+  apiKey String
+  publicKey String
+
+}
