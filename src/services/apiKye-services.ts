@@ -8,13 +8,14 @@ const prisma : PrismaClient = new PrismaClient();
 
 export const generateApiKeyService = (req : Request) => {
 
-	const apiKey : string = crypto.randomBytes(32).toString('hex');
+	const publicKey : string = req.body.publicKey;
+	const apiKey : string = crypto.createHash('sha256').update(publicKey).digest('hex');
 	
 	const keysHistory = prisma.keys_history.create({
 		data : {
 			linkedEmail : req.body.email,
 			apiKey : apiKey, 
-			publicKey : req.body.publicKey 
+			publicKey : publicKey 
 		}
 	}); 
 
