@@ -5,12 +5,23 @@ import CustomException from "../classes/custom-error";
 
 const prisma = new PrismaClient();
 
-export const validarFirma = (req: Request, res: Response, next: NextFunction) => {
+export const validarFirma = async (req: Request, res: Response, next: NextFunction) => {
+
+    if(req.url === "/apiKey/create-api"){
+        next(); 
+        return; 
+    }
 
     const publicKeyBase64: String = String(req.headers['public-key']);
     const requestId: String = String(req.headers['request-id']);
     const signatureBase64: String = String(req.headers['signature']);
     let isValid: boolean = true;
+
+    isValid = await validacionAPIKey(req)
+    if(!isValid){
+        next(new CustomException("Credenciales no validas", 200, []));
+        return; 
+    }
 
     try{
     
@@ -45,14 +56,41 @@ export const validarFirma = (req: Request, res: Response, next: NextFunction) =>
         next();
     }catch(e){
         if(!!(publicKeyBase64 || requestId || signatureBase64)){
-            throw new CustomException("No se estan enviando los headers necesarios", 200, []);
+            next(new CustomException("No se estan enviando los headers necesarios", 400, []));
+            return; 
         }
-        throw new CustomException("Se genero un error no controlado al validar la firma", 200, []);
+        next(new CustomException("Se genero un error no controlado al validar la firma", 400, []));
+        return; 
     }
 
     if(!isValid){
-        throw new CustomException("Credenciales no validas", 200, []);
+        next(new CustomException("Credenciales no validas", 200, []));
+        return; 
     }
 
+
+}
+
+const validacionAPIKey = async (req: Request) => {
+    
+    const apiKey : string = String(req.headers['x-api-key']) || "";
+    const publicKey : string = String(req.headers['public-key']) || "";
+
+    const keyHistory = await prisma.keys_history.findUnique({
+        where: {
+            apiKey : apiKey,
+        }
+    })
+
+    if(!keyHistory){
+        return false; 
+    }
+
+
+    if(keyHistory.publicKey != publicKey){
+        return false; 
+    }
+
+    return true; 
 
 }
