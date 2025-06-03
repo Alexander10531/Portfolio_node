@@ -62,12 +62,15 @@ export const listProductController = async (req : Request, res : Response, next 
         throw customException; 
     }
 
-    let [count, dataProducts] = await listProductsService(req, res); 
+
+    let [count, dataProducts, dataProductsSize] = await listProductsService(req, res); 
+    
     res.status(200)
         .json({
             "Mensaje" : "Se extrajo la informacion de manera correcta.", 
             "data" : dataProducts,
-            "count":  count
+            "count":  count, 
+            lastPage : Math.floor(Number(count) / Number(dataProductsSize)) > Number(req.query.page),
         }); 
     next(); 
 

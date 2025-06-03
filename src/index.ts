@@ -8,6 +8,7 @@ import logger from "./config/logger";
 import dotenv from "dotenv"; 
 import { mainRouter } from "./routes/router-main";
 import { validarFirma } from "./utils/key-validation";
+import cors from "cors";
 
 const app : Application = Express(); 
 const port = Number(process.env.SERVER_PORT) || 3000; 
@@ -17,6 +18,9 @@ dotenv.config();
 testConnection(); 
 initializateCache();
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+})); 
 app.use(validarFirma); 
 app.use(bodyParser.json());
 app.use(mainRouter);

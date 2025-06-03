@@ -6,7 +6,6 @@ import { generateApiKeyService } from "../services/apiKye-services";
 
 
 const expressValidator = require('express-validator');
-const prisma = new PrismaClient();
 
 export const generateApiKey = async (req : Request, res : Response, next : NextFunction) => {
     

@@ -16,7 +16,7 @@ export const validarFirma = async (req: Request, res: Response, next: NextFuncti
     const requestId: String = String(req.headers['request-id']);
     const signatureBase64: String = String(req.headers['signature']);
     let isValid: boolean = true;
-
+    
     isValid = await validacionAPIKey(req)
     if(!isValid){
         next(new CustomException("Credenciales no validas", 200, []));
@@ -25,16 +25,19 @@ export const validarFirma = async (req: Request, res: Response, next: NextFuncti
 
     try{
     
+
         const rawPublicKey = Buffer.from(publicKeyBase64, 'base64');
         const signature = Buffer.from(signatureBase64, 'base64');
     
+
         const spkiPrefix = Buffer.from([
             0x30, 0x2a,
             0x30, 0x05,
             0x06, 0x03, 0x2b, 0x65, 0x70,
             0x03, 0x21, 0x00
         ]);
-    
+
+
         const spkiKey = Buffer.concat([spkiPrefix, rawPublicKey]);
     
         const keyObject = crypto.createPublicKey({

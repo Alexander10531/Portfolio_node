@@ -60,6 +60,6 @@ export const listProductsService = async (req : Request, res : Response) => {
         prisma.product.count(), 
     ])
     
-    return [count, dataProducts]; 
+    return [count, dataProducts, dataProducts.length]; 
 
 }
