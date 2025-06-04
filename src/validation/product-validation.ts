@@ -6,7 +6,9 @@ const expressValidator = require('express-validator');
 export const validateState = (value : number) => {
 
     let states = cacheState.get("states"); 
-    let valor = states.find((state : State) => state.idState == value ); 
+    let valor = states.find((state : State) => {
+        return state.idState == value
+    }); 
     if(valor){
         return true; 
     }
