@@ -48,8 +48,8 @@ model Logs {
 model keys_history {
 
   idApiKeys Int @id @default(autoincrement())
-  linkedEmail String
-  apiKey String
-  publicKey String
+  linkedEmail String @unique
+  apiKey String @unique
+  publicKey String @unique
 
 }

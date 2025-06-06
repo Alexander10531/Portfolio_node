@@ -46,8 +46,8 @@ CREATE TABLE public.keys_history (
 	"linkedEmail" varchar NOT NULL,
 	"apiKey" varchar NOT NULL,
 	"publicKey" varchar NOT NULL,
-	CONSTRAINT keys_history_pk PRIMARY KEY (idapikeys),
-	CONSTRAINT keys_history_unique UNIQUE (linkedemail),
-	CONSTRAINT keys_history_unique_1 UNIQUE (apikey),
-	CONSTRAINT keys_history_unique_2 UNIQUE (publickey)
+	CONSTRAINT keys_history_pk PRIMARY KEY ("idApiKeys"),
+	CONSTRAINT keys_history_unique UNIQUE ("linkedEmail"),
+	CONSTRAINT keys_history_unique_1 UNIQUE ("apiKey"),
+	CONSTRAINT keys_history_unique_2 UNIQUE ("publicKey")
 );
